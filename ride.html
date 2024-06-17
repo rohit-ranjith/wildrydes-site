@@ -3,111 +3,167 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AudioShake Integration Example</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Audio Rydes - Extract Music Stems</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Music stem extraction service">
+    <meta name="author" content="">
 
-    <!-- Bootstrap CSS for styling -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/audio.css">
+    <link rel="stylesheet" href="/css/message.css">
 
     <!-- AudioShake Widget Script -->
     <script src="https://assets.audioshake.ai/audioshake1.1.min.js" type="text/javascript"></script>
-
-    <style>
-        /* Add some custom styling for better visual presentation */
-        body {
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-        table {
-            width: 100%;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 15px;
-            text-align: left;
-        }
-        .btn-info {
-            margin: 10px 0;
-        }
-    </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>AudioShake Widget Integration Example</h1>
-        <p>Click the "Generate Stems" button to generate stems for the song using AudioShake.</p>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Song Name</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Sample Song</td>
-                    <td id="sample-element-id-123456"
-                        audioshake-audio-id="sample-song-id-123456789"
-                        audioshake-link="https://link/to/file.wav"
-                        audioshake-filename="sample-song">
-                        <button class="btn btn-info">Generate Stems</button>
-                    </td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
+    <div class="info panel panel-default">
+        <div class="panel-heading">
+            <button id="upload" class="btn btn-primary" disabled="disabled">Upload Music</button>
+            <div class="dropdown pull-right">
+                <button id="accountLink" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Account <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="accountLink">
+                    <li><a id="signOut" href="#">Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ol id="updates">
+                <li>Welcome! Upload your music to start extracting stems.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="noApiMessage" class="configMessage" style="display: none;">
+        <div class="backdrop"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Successfully Authenticated!</h3>
+            </div>
+            <div class="panel-body">
+                <p>This page is not functional yet because there is no API invoke URL configured in <a href="/js/config.js">/js/config.js</a>. You'll configure this in Module 3.</p>
+                <p>In the meantime, if you'd like to test the Amazon Cognito user pool authorizer for your API, use the auth token below:</p>
+                <textarea class="authToken"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div id="noCognitoMessage" class="configMessage" style="display: none;">
+        <div class="backdrop"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">No Cognito User Pool Configured</h3>
+            </div>
+            <div class="panel-body">
+                <p>There is no user pool configured in <a href="/js/config.js">/js/config.js</a>. You'll configure this in Module 2 of the workshop.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="main">
+        <!-- Removed the map element as it is no longer needed -->
+    </div>
+
+    <!-- Upload Music Section -->
+    <div class="container">
+        <h2 class="text-center">Upload Your Music and Generate Stems</h2>
+        <form id="upload-form">
+            <div class="form-group">
+                <label for="musicFile">Select Music File:</label>
+                <input type="file" class="form-control" id="musicFile" accept="audio/*">
+            </div>
+            <button type="button" class="btn btn-primary" id="uploadButton">Upload and Generate Stems</button>
+        </form>
+        
+        <div class="uploaded-files mt-4">
+            <h3>Uploaded Files</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Song Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="fileList">
+                    <!-- Uploaded files will be listed here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- AudioShake Widget Setup and Initialization -->
     <script type="text/javascript">
-        // Setup the AudioShake Widget
+        // Initialize AudioShake Widget
         function setupAudioShakeWidget() {
-            const stemOptions = ['vocals', 'instrumental', 'bass', 'drums', 'guitar', 'piano'];
             const licenseId = 'your-license-id'; // Replace with your actual license ID
-            const format = 'wav';
-            const widgetUserSessionId = 'unique-session-id'; // Unique session identifier for this user
+            const format = 'wav'; // Output format for the stems
+            const stemOptions = ['vocals', 'instrumental', 'bass', 'drums']; // Desired stem options
 
             // Create a new instance of the AudioShake widget
             const gAudioShakeWidget = new AudioShakeWidgetLib.WidgetPresenter({
-                licenseId,
-                format,
-                stemOptions,
-                widgetUserSessionId
+                licenseId: licenseId,
+                format: format,
+                stemOptions: stemOptions
             });
 
             console.log('AudioShake Widget Initialized: ', gAudioShakeWidget);
+        }
 
-            // Bind click event to elements with audioshake-audio-id attribute
-            document.querySelectorAll('[audioshake-audio-id]').forEach(element => {
-                element.querySelector('button').addEventListener('click', () => {
-                    const audioId = element.getAttribute('audioshake-audio-id');
-                    const audioLink = element.getAttribute('audioshake-link');
-                    const audioFilename = element.getAttribute('audioshake-filename');
+        document.addEventListener('DOMContentLoaded', (event) => {
+            setupAudioShakeWidget(); // Initialize the widget
 
-                    console.log(`Generating stems for audio ID: ${audioId}`);
-                    console.log(`Audio Link: ${audioLink}`);
-                    console.log(`Audio Filename: ${audioFilename}`);
+            // Handle file uploads
+            document.getElementById('uploadButton').addEventListener('click', () => {
+                const fileInput = document.getElementById('musicFile');
+                if (fileInput.files.length === 0) {
+                    alert('Please select a music file to upload.');
+                    return;
+                }
 
-                    // Open the AudioShake widget for stem generation
+                const file = fileInput.files[0];
+                const fileName = file.name;
+                const fileURL = URL.createObjectURL(file); // Create a temporary URL for the file
+
+                // Append the file details to the file list
+                const fileList = document.getElementById('fileList');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${fileName}</td>
+                    <td id="audio-trigger-${fileName}"
+                        audioshake-audio-id="${fileName}-id"
+                        audioshake-link="${fileURL}"
+                        audioshake-filename="${fileName}">
+                        <button class="btn btn-info">Generate Stems</button>
+                    </td>
+                `;
+                fileList.appendChild(newRow);
+
+                // Add event listener to the new AudioShake trigger element
+                newRow.querySelector('button').addEventListener('click', () => {
+                    console.log(`Generating stems for file: ${fileName}`);
                     gAudioShakeWidget.open({
-                        audioId: audioId,
-                        audioLink: audioLink,
-                        audioFilename: audioFilename
+                        audioId: `${fileName}-id`,
+                        audioLink: fileURL,
+                        audioFilename: fileName
                     });
                 });
             });
-        }
-
-        // Initialize the widget once the DOM content is fully loaded
-        document.addEventListener('DOMContentLoaded', (event) => {
-            setupAudioShakeWidget();
         });
     </script>
 
-    <!-- jQuery and Bootstrap JS for necessary widget dependencies -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Existing Scripts -->
+    <script src="js/vendor/jquery-3.1.0.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/cognito-auth.js"></script>
+    <script src="js/audio.js"></script>
 </body>
 
 </html>

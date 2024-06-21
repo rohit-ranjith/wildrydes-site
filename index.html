@@ -1,36 +1,156 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html class="no-js" lang="">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-    <title>Wild Rydes</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Serverless web application example">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio Rydes</title> <!-- Updated title -->
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="css/font.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <script src="js/vendor/modernizr.js"></script>
 </head>
+<body class="page-home">
 
-<body>
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Wild Rydes - Audio Mastering Service</h1>
-            <p>Welcome to the Wild Rydes audio mastering service. Click below to start mastering your audio files.</p>
-            <p><a class="btn btn-primary btn-lg" href="ride.html" role="button">Get Started</a></p>
-        </div>
+  <header class="site-header">
+    <h1 class="title">Audio Rydes</h1> <!-- Updated brand name -->
+    <nav class="site-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="upload.html">Upload Music</a></li> <!-- New functionality -->
+        <li><a href="stems.html">View Stems</a></li> <!-- New functionality -->
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact Us</a></li> <!-- Updated from "Apply" -->
+      </ul>
+    </nav>
+    <button type="button" class="btn-menu"><span>Menu</span></button>
+    <a class="home-button" href="/register.html">Get Started!</a> <!-- Updated button -->
+  </header>
+
+  <section class="home-about">
+    <div class="row column large-9 xlarge-6 xxlarge-4">
+      <h2 class="section-title">How Does This Work?</h2>
+      <p class="content">
+        Welcome to Audio Rydes! Transform your music with ease by uploading your tracks and getting song stems in minutes. Our service allows you to extract instrumental, vocal, and other stems from your favorite songs, providing endless possibilities for remixing and creativity. Get started by uploading your music files and let us do the magic.
+      </p>
     </div>
 
-    <!-- Existing Scripts -->
-    <script src="js/vendor/jquery-3.1.0.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
-    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/cognito-auth.js"></script>
-    <script src="js/main.js"></script>
-</body>
+    <div class="row medium-up-2 large-up-4">
+      <div class="column">
+        <div class="home-about-block">
+          <h3 class="title icon-upload">Upload Your Music</h3>
+          <p class="content">Easily upload your music files through our web interface. We support a variety of formats to make your experience seamless.</p>
+        </div>
+      </div>
 
-</html>
+      <div class="column">
+        <div class="home-about-block">
+          <h3 class="title icon-process">Process and Extract</h3>
+          <p class="content">Our advanced algorithms will process your music and extract the stems you need. Whether it's vocals, drums, or any other element, we've got you covered.</p>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="home-about-block">
+          <h3 class="title icon-download">Download Your Stems</h3>
+          <p class="content">Once the processing is complete, download your extracted stems and start creating. It's that simple!</p>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="home-about-block">
+          <h3 class="title icon-share">Share Your Creations</h3>
+          <p class="content">Share your new creations with the world. Our platform allows you to easily share your stems and remixes with your audience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-story">
+    <div class="row column large-9 xlarge-6 xxlarge-4">
+      <h2 class="section-title">Our Story</h2>
+      <p class="content">
+        Audio Rydes was founded by a group of passionate musicians and developers who wanted to make music production more accessible. Our mission is to provide tools that empower artists to experiment and create without limits. We believe that music is a universal language, and with the right tools, everyone can be a creator.
+      </p>
+    </div>
+  </section>
+
+  <section class="home-sign-up">
+    <div class="row column">
+      <img class="icon-w" src="images/audio-logo.png"> <!-- Updated image -->
+
+      <form onsubmit="javascript:void(0);">
+        <input type="email" placeholder="Enter your email address">
+        <button type="button">Submit</button>
+      </form>
+
+      <h2 class="section-title">Sign Up</h2>
+
+      <p class="content">Join our community to get early access to new features and updates. Enter your email to stay in the loop!</p>
+
+      <div class="apps">
+        <a class="app-icon" href=""><img src="images/audio-home-apple.png"></a>
+        <a class="app-icon" href=""><img src="images/audio-home-google.png"></a>
+        <a class="app-icon" href=""><img src="images/audio-home-windows.png"></a> <!-- Updated app icons -->
+        <a class="app-icon" href=""><img src="images/audio-home-linux.png"></a>
+      </div>
+
+      <div class="social">
+        <a class="icon-fb" href="">Facebook</a>
+        <a class="icon-tw" href="">Twitter</a>
+        <a class="icon-ig" href="">Instagram</a>
+        <a class="icon-yt" href="">YouTube</a> <!-- Updated social media icons -->
+        <a class="icon-dc" href="">Discord</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-quote">
+    <div class="row column medium-8 xxlarge-6">
+      <div class="quote-wrap">
+        <div class="quote">
+          “Audio Rydes transformed my music production workflow. I can now easily extract and manipulate stems, opening up endless possibilities for remixing.”
+        </div>
+        <div class="quoter">- Satisfied Audio Rydes User</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kraken-callout">
+    <div class="row">
+      <div class="columns medium-6 xxlarge-4 xxlarge-offset-2">
+        <img src="images/audio-callout.png"> <!-- Updated image -->
+      </div>
+
+      <div class="columns medium-6 xlarge-5 xxlarge-4">
+        <h4 class="title">Coming Soon</h4>
+        <p class="content">
+          New features and tools for musicians and producers. Stay tuned for updates on how we are expanding our platform to better serve your creative needs.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="row column">
+      <nav class="footer-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="upload.html">Upload Music</a></li>
+          <li><a href="stems.html">View Stems</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="row column">
+      <div class="footer-legal">
+        &copy;Audio Rydes Inc<br>
+        All Rights Reserved
+      </div>
+    </div>
+  </footer>
+
+ 
